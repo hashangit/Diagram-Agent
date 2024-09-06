@@ -45,7 +45,7 @@ regex==2023.6.3
 python-dateutil==2.8.2
 
 # Asynchronous programming
-aiohttp==3.8.5
+aiohttp==3.10.2
 
 # Type hinting
 typing-extensions==4.7.1
