@@ -1,0 +1,20 @@
+# Core dependencies
+langchain==0.0.207
+pydantic==1.10.8
+colorama==0.4.6
+
+# LLM providers
+openai==0.27.8
+anthropic==0.3.4
+
+# Utility packages
+python-dotenv==1.0.0
+requests==2.31.0
+Pillow==9.5.0
+
+# Mermaid-related packages (if needed)
+# mermaid==0.1.1
+
+# Additional packages that might be required by langchain
+numpy==1.25.0
+pyyaml==6.0
