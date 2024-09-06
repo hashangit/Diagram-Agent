@@ -30,7 +30,7 @@ pandas==2.0.3
 chromadb==0.3.26
 
 # Natural Language Processing
-nltk==3.8.1
+nltk==3.9
 
 # JSON handling
 json5==0.9.14
