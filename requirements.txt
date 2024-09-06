@@ -54,7 +54,7 @@ typing-extensions==4.7.1
 pathlib==1.0.1
 
 # Progress bars
-tqdm==4.65.0
+tqdm==4.66.3
 
 # Text wrapping
 textwrap3==0.9.2
