@@ -121,16 +121,39 @@ class QuestionnaireAgent:
         except StopIteration:
             # Questionnaire ended unexpectedly, use available information
             pass
+        finally:
+            # Generate the final diagram type based on the entire conversation
+            diagram_type = self.generate_diagram_type()
+            
+            # Check if the diagram type is supported
+            if not self.is_diagram_supported(diagram_type):
+                yield f"I apologize, but the {diagram_type} diagram is not supported by the diagramming agent at this time. Please try with a supported Mermaid diagram type (flowchart, sequence, class, state, er, gantt, pie, user journey) or wait for future updates."
+                return
 
-        # Generate the final diagram type based on the entire conversation
-        diagram_type = self.generate_diagram_type()
-        
-        # Check if the diagram type is supported
-        if not self.is_diagram_supported(diagram_type):
-            yield f"I apologize, but the {diagram_type} diagram is not supported by the diagramming agent at this time. Please try with a supported Mermaid diagram type (flowchart, sequence, class, state, er, gantt, pie, user journey) or wait for future updates."
-            return
+            # Generate the brief based on the entire conversation
+            brief = self.generate_brief()
+            
+            yield questions, answers, brief, diagram_type
 
-        # Generate the brief based on the entire conversation
-        brief = self.generate_brief()
-        
-        return questions, answers, brief, diagram_type
+if __name__ == "__main__":
+    agent = QuestionnaireAgent()
+    questionnaire = agent.run_questionnaire()
+    
+    try:
+        while True:
+            question = next(questionnaire)
+            if isinstance(question, tuple):
+                questions, answers, brief, diagram_type = question
+                print(f"Final Brief: {brief}")
+                print(f"Diagram Type: {diagram_type}")
+                break
+            elif isinstance(question, str):
+                if question.startswith("I apologize"):
+                    print(question)
+                    break
+                else:
+                    print(f"Question: {question}")
+                    answer = input("Your answer: ")
+                    questionnaire.send(answer)
+    except StopIteration:
+        print("Questionnaire ended unexpectedly")

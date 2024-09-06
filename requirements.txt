@@ -1,20 +1,63 @@
 # Core dependencies
-langchain==0.0.207
-pydantic==1.10.8
+langchain==0.0.268
+pydantic==1.10.12
 colorama==0.4.6
 
 # LLM providers
 openai==0.27.8
-anthropic==0.3.4
+anthropic==0.3.7
+
+# Web framework
+flask==2.3.2
+flask-socketio==5.3.4
 
 # Utility packages
 python-dotenv==1.0.0
 requests==2.31.0
-Pillow==9.5.0
+Pillow==10.0.0
 
-# Mermaid-related packages (if needed)
-# mermaid==0.1.1
+# Mermaid-related packages
+mermaid==0.3.2
 
-# Additional packages that might be required by langchain
-numpy==1.25.0
-pyyaml==6.0
+# Additional packages
+numpy==1.25.2
+pyyaml==6.0.1
+
+# Data handling and processing
+pandas==2.0.3
+
+# Vector stores
+chromadb==0.3.26
+
+# Natural Language Processing
+nltk==3.8.1
+
+# JSON handling
+json5==0.9.14
+
+# Markdown support
+markdown==3.4.3
+
+# Regular expressions
+regex==2023.6.3
+
+# Time handling
+python-dateutil==2.8.2
+
+# Asynchronous programming
+aiohttp==3.8.5
+
+# Type hinting
+typing-extensions==4.7.1
+
+# File system operations
+pathlib==1.0.1
+
+# Progress bars
+tqdm==4.65.0
+
+# Text wrapping
+textwrap3==0.9.2
+
+# Environment variable management
+environs==9.5.0

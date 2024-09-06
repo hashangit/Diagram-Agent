@@ -22,4 +22,8 @@ class MermaidChain:
             elif in_code_block:
                 mermaid_code.append(line.strip())
 
-        return '\n'.join(mermaid_code)
+        if mermaid_code:
+            return '\n'.join(mermaid_code)
+        else:
+            # If no code blocks are found, return the entire response
+            return response.strip()

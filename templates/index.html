@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mermaid Diagram Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            --primary: 210 40% 98%;
+            --primary-foreground: 222.2 47.4% 11.2%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 212.7 26.8% 83.9%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .section {
+            flex: 1;
+            background-color: hsl(var(--card));
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 24px;
+            transition: flex 0.3s ease;
+        }
+
+        .section:hover {
+            flex: 1.5;
+        }
+
+        h1 {
+            color: hsl(var(--card-foreground));
+            text-align: center;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        #console, #mermaid-input {
+            width: 100%;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            background-color: hsl(var(--muted));
+            color: hsl(var(--muted-foreground));
+            font-family: monospace;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        #console {
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        #mermaid-input {
+            height: 150px;
+            resize: vertical;
+        }
+
+        #mermaid-output {
+            width: 100%;
+            min-height: 300px;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 24px;
+            overflow: auto;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"], button {
+            padding: 8px 16px;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            background-color: hsl(var(--input));
+            color: hsl(var(--input-foreground));
+        }
+
+        button {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: hsl(var(--foreground));
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <div class="container">
+        <div class="section" id="generator-section">
+            <h1>AI Mermaid Diagram Generator</h1>
+            <div id="console"></div>
+            <div class="input-group">
+                <button onclick="newDiagram()">New Diagram</button>
+                <input type="text" id="user-input" placeholder="Enter your input here">
+                <button onclick="sendInput()">Submit</button>
+            </div>
+        </div>
+        <div class="section" id="visualizer-section">
+            <h1>Mermaid Diagram Visualizer</h1>
+            <div id="mermaid-output"></div>
+            <textarea id="mermaid-input" placeholder="Enter Mermaid code here"></textarea>
+            <button onclick="renderMermaid()">Render Diagram</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const consoleElement = document.getElementById('console');
+        const userInputElement = document.getElementById('user-input');
+        const mermaidInputElement = document.getElementById('mermaid-input');
+        const mermaidOutputElement = document.getElementById('mermaid-output');
+
+        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+        socket.on('console_output', function(data) {
+            if (data.html) {
+                consoleElement.innerHTML += data.html;
+            } else {
+                consoleElement.innerText += data.text;
+            }
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+        });
+
+        function newDiagram() {
+            socket.emit('stop_current_flow');
+            consoleElement.innerHTML = '';
+            socket.emit('start_main');
+            userInputElement.focus();
+        }
+
+        function sendInput() {
+            const input = userInputElement.value;
+            if (input.trim() !== '') {
+                socket.emit('user_input', {input: input});
+                userInputElement.value = '';
+            }
+            userInputElement.focus();
+        }
+
+        function renderMermaid() {
+            const mermaidCode = mermaidInputElement.value;
+            mermaidOutputElement.innerHTML = '';
+            mermaid.render('mermaid-diagram', mermaidCode).then(result => {
+                mermaidOutputElement.innerHTML = result.svg;
+            }).catch(error => {
+                mermaidOutputElement.textContent = 'Error rendering diagram: ' + error;
+            });
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+            renderMermaid();
+        }
+
+        userInputElement.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendInput();
+            }
+        });
+
+        mermaidInputElement.addEventListener('keyup', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                renderMermaid();
+            }
+        });
+    </script>
+</body>
+</html>

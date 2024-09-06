@@ -1,6 +1,9 @@
+import logging
 from diagramming_workflow import DiagrammingWorkflow, DiagrammingState
 from console_interface import ConsoleInterface
 from qna_agent.agent.questionnaire_agent import QuestionnaireAgent
+
+logger = logging.getLogger(__name__)
 
 def main():
     workflow = DiagrammingWorkflow()

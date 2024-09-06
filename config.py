@@ -29,7 +29,7 @@ OUTPUTS_DIR = "outputs"
 
 # Customization options
 ENABLE_COLORS = True
-ENABLE_ICONS = False
+ENABLE_ICONS = True
 
 # Performance tuning
 CACHE_RESULTS = True

@@ -1,11 +1,8 @@
-import logging
 from typing import Optional
 from .mermaid_chain import MermaidChain
 from common.llm_handler import LLMHandler
 from prompts.mermaid_agent_prompt import get_agent_prompt
 from mermaid_agent.utils import load_example
-
-logger = logging.getLogger(__name__)
 
 class MermaidAgent:
     """
@@ -40,13 +37,11 @@ class MermaidAgent:
 
             prompt = self._create_generation_prompt(brief, diagram_type)
             mermaid_code = self.chain.run(prompt)
-            logger.debug(f"Generated Mermaid code:\n{mermaid_code}")
+
             return mermaid_code
         except ValueError as ve:
-            logger.error(f"Invalid input: {str(ve)}")
             raise
         except Exception as e:
-            logger.error(f"Error generating diagram: {str(e)}")
             raise
 
     def _create_generation_prompt(self, brief: str, diagram_type: str) -> str:
