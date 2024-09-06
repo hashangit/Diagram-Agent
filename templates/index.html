@@ -113,16 +113,6 @@
             resize: vertical;
         }
 
-        #mermaid-output {
-            width: 100%;
-            min-height: 300px;
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 24px;
-            overflow: auto;
-        }
-
         .input-group {
             display: flex;
             gap: 8px;
@@ -164,6 +154,43 @@
             font-size: 24px;
             cursor: pointer;
         }
+        #mermaid-output {
+            width: 100%;
+            min-height: 300px;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #mermaid-output svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .zoom-controls button {
+            font-size: 18px;
+            padding: 5px 10px;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .zoom-controls button:hover {
+            background-color: hsl(var(--primary) / 0.9);
+        }
     </style>
 </head>
 <body>
@@ -180,7 +207,14 @@
         </div>
         <div class="section" id="visualizer-section">
             <h1>Mermaid Diagram Visualizer</h1>
-            <div id="mermaid-output"></div>
+            <div id="mermaid-output">
+                <div class="zoom-controls">
+                    <button onclick="zoomIn()">+</button>
+                    <button onclick="zoomOut()">-</button>
+                    <button onclick="resetZoom()">Reset</button>
+                </div>
+                <div id="mermaid-diagram"></div>
+            </div>
             <textarea id="mermaid-input" placeholder="Enter Mermaid code here"></textarea>
             <button onclick="renderMermaid()">Render Diagram</button>
         </div>
@@ -221,20 +255,54 @@
             userInputElement.focus();
         }
 
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+            renderMermaid();
+        }
+
+        let currentZoom = 1;
+        const zoomStep = 0.1;
+        const maxZoom = 3;
+        const minZoom = 0.5;
+
         function renderMermaid() {
             const mermaidCode = mermaidInputElement.value;
-            mermaidOutputElement.innerHTML = '';
+            mermaidOutputElement.innerHTML = '<div class="zoom-controls"><button onclick="zoomIn()">+</button><button onclick="zoomOut()">-</button><button onclick="resetZoom()">Reset</button></div>';
             mermaid.render('mermaid-diagram', mermaidCode).then(result => {
-                mermaidOutputElement.innerHTML = result.svg;
+                mermaidOutputElement.innerHTML += result.svg;
+                resetZoom();
             }).catch(error => {
                 mermaidOutputElement.textContent = 'Error rendering diagram: ' + error;
             });
         }
 
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
-            renderMermaid();
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom += zoomStep;
+                applyZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom -= zoomStep;
+                applyZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const svg = mermaidOutputElement.querySelector('svg');
+            if (svg) {
+                svg.style.transform = `scale(${currentZoom})`;
+                svg.style.transformOrigin = 'center';
+                svg.style.transition = 'transform 0.2s ease-out';
+            }
         }
 
         userInputElement.addEventListener('keypress', function(e) {
