@@ -43,6 +43,17 @@ class DiagrammingWorkflow:
                         questionnaire.send(user_input)
         except StopIteration:
             print("DEBUG: StopIteration caught")  # Debug print
+            # Use whatever information is available in the scratchpad
+            state.brief = questionnaire_agent.generate_brief()
+            state.diagram_type = questionnaire_agent.generate_diagram_type()
+        
+        # Validate state after questionnaire
+        if not state.brief or not state.diagram_type:
+            state.error_message = "Unable to determine diagram type or generate brief. Please provide more information."
+            state.diagram_type = None
+        elif not questionnaire_agent.is_diagram_supported(state.diagram_type):
+            state.error_message = f"The {state.diagram_type} diagram is not supported. Please try with a supported Mermaid diagram type."
+            state.diagram_type = None
         
         return state
 

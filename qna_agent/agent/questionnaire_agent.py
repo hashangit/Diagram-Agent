@@ -100,23 +100,27 @@ class QuestionnaireAgent:
         answers = []
         
         question_count = 0
-        while self.points < 100 and question_count < self.max_questions:
-            if question_count > 0:
-                questions.append(next_question)
-            
-            user_input = yield questions[question_count]
-            
-            if user_input is not None:
-                self.add_to_scratchpad("human", user_input)
-                answers.append(user_input)
+        try:
+            while self.points < 100 and question_count < self.max_questions:
+                if question_count > 0:
+                    questions.append(next_question)
                 
-                # Use LLM to evaluate the answer, get the score, next question, and initial diagram type
-                score, next_question, diagram_type = self.evaluate_answer(user_input)
-                self.points += score
-                self.add_to_scratchpad("system", f"Diagram Type: {diagram_type}")
-                self.add_to_scratchpad("system", f"Score: {score}")
-            
-            question_count += 1
+                user_input = yield questions[question_count]
+                
+                if user_input is not None:
+                    self.add_to_scratchpad("human", user_input)
+                    answers.append(user_input)
+                    
+                    # Use LLM to evaluate the answer, get the score, next question, and initial diagram type
+                    score, next_question, diagram_type = self.evaluate_answer(user_input)
+                    self.points += score
+                    self.add_to_scratchpad("system", f"Diagram Type: {diagram_type}")
+                    self.add_to_scratchpad("system", f"Score: {score}")
+                
+                question_count += 1
+        except StopIteration:
+            # Questionnaire ended unexpectedly, use available information
+            pass
 
         # Generate the final diagram type based on the entire conversation
         diagram_type = self.generate_diagram_type()
