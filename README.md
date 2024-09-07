@@ -1,4 +1,4 @@
-# Mermaid Agent
+# Diagram Agent
 
 ## Overview
 
