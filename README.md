@@ -1,76 +1,152 @@
 # Diagram Agent
 
+## Table of Contents
+
+- [Diagram Agent](#diagram-agent)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Features](#features)
+  - [Diagrams Users Can Generate](#diagrams-users-can-generate)
+  - [User Experience Flow](#user-experience-flow)
+  - [Front End Features](#front-end-features)
+  - [Setup and Run Guidance](#setup-and-run-guidance)
+    - [Prerequisites](#prerequisites)
+    - [Docker Version](#docker-version)
+    - [Non-Docker Version](#non-docker-version)
+  - [Usage](#usage)
+    - [Generating Diagrams](#generating-diagrams)
+    - [Generating Questionnaires](#generating-questionnaires)
+  - [API Endpoints](#api-endpoints)
+  - [Example Output](#example-output)
+  - [Dependencies](#dependencies)
+  - [Contributing](#contributing)
+  - [Future Developments](#future-developments)
+  - [License](#license)
+
 ## Overview
 
 Diagram Agent is a powerful tool that combines the capabilities of workflow diagramming and questionnaire generation using AI. It leverages the Mermaid markdown-like syntax to create various types of diagrams and uses advanced language models to generate relevant questionnaires.
 
 ## Features
 
-- **Diagram Generation**: Create various types of diagrams including flowcharts, sequence diagrams, Gantt charts, ER diagrams, class diagrams, and pie charts using natural language descriptions.
-- **Questionnaire Generation**: Generate comprehensive questionnaires on any given topic using AI.
-- **Interactive Q&A**: Provides interactive Q&A capabilities based on expert prompts and agent responses.
-- **Customizable Output**: Enables the creation of customized output files for user reference.
+- **Natural Language Processing**: Diagram Agent uses advanced language models to generate relevant questionnaires.
+- **Diagram Generation**: Create various types of diagrams such as flowcharts, sequence diagrams, Gantt charts, ER diagrams, class diagrams, and pie charts using natural language descriptions.
 - **Docker Support**: Easily deployable using Docker for consistent environments across different systems.
+- **Modular Design**: Extensible to support additional diagram types.
 
-## Installation
+## Diagrams Users Can Generate
+
+- Flowcharts
+- Sequence Diagrams
+- Gantt Charts
+- ER Diagrams
+- Class Diagrams
+- Pie Charts
+- Mindmaps
+
+## User Experience Flow
+
+1. **Welcome Message**: Users are greeted with a welcome message and instructions.
+2. **Interactive Questionnaire**: Users answer questions to specify the diagram details.
+3. **Diagram Generation**: The agent generates the requested diagram based on user input.
+4. **Review and Modify**: Users can request modifications if necessary.
+5. **Final Output**: The final Mermaid code is provided, ready for use in any Mermaid renderer.
+
+## Front End Features
+
+- **Interactive Console**: Real-time interaction via console interface.
+- **WebSocket Integration**: Real-time updates and communication between front end and back end.
+- **Responsive Design**: Accessible on various devices.
+
+## Setup and Run Guidance
 
 ### Prerequisites
 
 - Docker
 - Docker Compose
 
-(Best used with Anthropic Claude Sonnet 3.5 or OpenAI GPT-4. Lesser models tend to create syntax errors)
+### Docker Version
 
-### Setup
-
-1. Clone the repository:
-   ```
+1. **Clone the repository**:
+   ```sh
    git clone https://github.com/your-repo/mermaid-agent.git
    cd mermaid-agent
    ```
 
-2. Create a `.env` file in the root directory based on the `sample_env.txt` file:
-   ```
+2. **Create a `.env` file**:
+   ```sh
    cp sample_env.txt .env
    ```
 
-3. Open the `.env` file and fill in the required values:
-   ```
-   # API Keys
+3. **Open the `.env` file and fill in the required values**:
+   ```env
    ANTHROPIC_API_KEY="your_anthropic_api_key"
    OPENAI_API_KEY="your_openai_api_key"
-
-   # Flask Configuration
    FLASK_APP=app.py
    FLASK_ENV=development
    FLASK_DEBUG=1
-
-   # Application Configuration
    LOG_LEVEL=INFO
    MAX_TOKENS=1000
    TEMPERATURE=0.7
-
-   # Output Configuration
    OUTPUT_DIRECTORY="./outputs"
-
-   # Security Configuration
    SECRET_KEY="your_secret_key"
    ```
 
-   Make sure to replace the placeholder values with your actual API keys and configuration settings.
-
-4. Build and run the Docker container:
-   ```
+4. **Build and run the Docker container**:
+   ```sh
    docker-compose up --build
    ```
 
-The application will be available at `http://localhost:5000`.
+### Non-Docker Version
+
+1. **Clone the repository**:
+   ```sh
+   git clone https://github.com/your-repo/mermaid-agent.git
+   cd mermaid-agent
+   ```
+
+2. **Create a virtual environment and activate it**:
+   ```sh
+   python3 -m venv env
+   source env/bin/activate
+   ```
+
+3. **Install the required packages**:
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Create a `.env` file**:
+   ```sh
+   cp sample_env.txt .env
+   ```
+
+5. **Open the `.env` file and fill in the required values**:
+   ```env
+   ANTHROPIC_API_KEY="your_anthropic_api_key"
+   OPENAI_API_KEY="your_openai_api_key"
+   FLASK_APP=app.py
+   FLASK_ENV=development
+   FLASK_DEBUG=1
+   LOG_LEVEL=INFO
+   MAX_TOKENS=1000
+   TEMPERATURE=0.7
+   OUTPUT_DIRECTORY="./outputs"
+   SECRET_KEY="your_secret_key"
+   ```
+
+6. **Run the Flask application**:
+   ```sh
+   flask run
+   ```
+
+Access the application at `http://localhost:5000`.
 
 ## Usage
 
-### Generating Diagrams [Slightly outdated and need updating]
+### Generating Diagrams
 
-To generate a diagram, send a POST request to `/generate_diagram` with the following JSON payload:
+Send a POST request to `/generate_diagram` with the following JSON payload:
 
 ```json
 {
@@ -81,7 +157,7 @@ To generate a diagram, send a POST request to `/generate_diagram` with the follo
 
 ### Generating Questionnaires
 
-To generate a questionnaire, send a POST request to `/generate_questionnaire` with the following JSON payload:
+Send a POST request to `/generate_questionnaire` with the following JSON payload:
 
 ```json
 {
@@ -95,25 +171,9 @@ To generate a questionnaire, send a POST request to `/generate_questionnaire` wi
 - `POST /generate_diagram`: Generate a diagram based on the provided description and type
 - `POST /generate_questionnaire`: Generate a questionnaire based on the provided topic
 
-## Development
-
-To run the application locally for development:
-
-1. Install the required packages:
-   ```
-   pip install -r requirements.txt
-   ```
-
-2. Set up your environment variables by copying the `sample_env.txt` to `.env` and filling in the required values as described in the Setup section.
-
-3. Run the Flask application:
-   ```
-   flask run
-   ```
-
 ## Example Output
 
-Here's an example of the output you might get when using the Mermaid Agent to create a flowchart for an AI chatbot system:
+Using Diagram Agent to create a flowchart for an AI chatbot system:
 
 ```mermaid
 flowchart TD
@@ -158,41 +218,28 @@ flowchart TD
     B --- Q & R & S
 ```
 
-This diagram illustrates the process and components of an advanced AI chatbot system using LangChain, incorporating microservices best practices.
-
 ## Dependencies
 
-The Mermaid Agent relies on several key libraries and frameworks. Here's a breakdown of the main dependencies:
+Diagram Agent relies on several key libraries and frameworks:
 
-1. **LangChain**: Used for building applications with large language models (LLMs).
-2. **OpenAI**: Provides access to OpenAI's language models.
-3. **Anthropic**: Used for accessing Anthropic's language models.
-4. **Flask**: Web framework for creating the API.
-5. **Pydantic**: Data validation and settings management using Python type annotations.
-6. **Python-dotenv**: Reads key-value pairs from a .env file and sets them as environment variables.
-7. **Requests**: HTTP library for making API calls.
-8. **Pillow**: Python Imaging Library for image processing tasks.
-9. **NumPy**: Library for numerical computing in Python.
-10. **PyYAML**: YAML parser and emitter for Python.
-11. **Mermaid**: Library for generating diagrams and flowcharts.
+Install required packages by running:
 
-These dependencies and their specific versions are listed in the `requirements.txt` file. You can install all required packages by running:
-
-```
+```sh
 pip install -r requirements.txt
 ```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please submit a Pull Request.
 
-### Future developments
+## Future Developments
+
 - Anthropic Prompt caching support (massively reduces the token costs)
-- More LLM provider support 
-- Federated inference capabilities 
-- Ollama support for local inference 
-- PDF/ CSV upload support during the initial interview questionnaire to provide context from existing documents
-- C4 diagram generation support 
+- More LLM provider support
+- Federated inference capabilities
+- Ollama support for local inference
+- PDF/CSV upload support during the initial interview questionnaire to provide context from existing documents
+- C4 diagram generation support
 
 ## License
 
