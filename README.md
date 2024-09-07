@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mermaid Agent is a powerful tool that combines the capabilities of workflow diagramming and questionnaire generation using AI. It leverages the Mermaid markdown-like syntax to create various types of diagrams and uses advanced language models to generate relevant questionnaires.
+Diagram Agent is a powerful tool that combines the capabilities of workflow diagramming and questionnaire generation using AI. It leverages the Mermaid markdown-like syntax to create various types of diagrams and uses advanced language models to generate relevant questionnaires.
 
 ## Features
 
