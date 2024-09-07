@@ -2,7 +2,7 @@ from langchain.llms import BaseLLM
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.schema import BaseMemory
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain.callbacks.manager import CallbackManager
 from langchain.schema.runnable import RunnableSequence
@@ -51,10 +51,10 @@ class LLMHandler:
 
     def generate_response(self, prompt: str, system_prompt: str = "") -> str:
         try:
-            messages = [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
-            ]
+            messages = []
+            if system_prompt:
+                messages.append({"role": "system", "content": system_prompt})
+            messages.append({"role": "user", "content": prompt})
             response = self.llm.generate([messages])
             return response.generations[0][0].text.strip()
         except Exception as e:

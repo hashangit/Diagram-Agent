@@ -64,7 +64,7 @@
         function newDiagram() {
             socket.emit('stop_current_flow');
             consoleElement.innerHTML = '';
-            socket.emit('start_main');
+            socket.emit('start_main', { console_width: 80 }); // Added console_width parameter
             userInputElement.focus();
         }
 
