@@ -5,11 +5,8 @@ import os
 colorama.init(autoreset=True)
 
 class ConsoleInterface:
-    def __init__(self):
-        try:
-            self.width = os.get_terminal_size().columns
-        except OSError:
-            self.width = 80  # Default width if terminal size can't be determined
+    def __init__(self, width=80):
+        self.width = width
 
     def _print_header(self, text, emoji="📊"):
         print("\n" + Fore.CYAN + Style.BRIGHT + "=" * self.width)

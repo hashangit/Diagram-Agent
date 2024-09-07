@@ -13,7 +13,7 @@ class QuestionnaireAgent:
         self.llm_handler = LLMHandler()
         self.expertise = expertise
         self.scratchpad = []
-        self.supported_diagrams = ["flowchart", "sequence", "class", "state", "er", "gantt", "pie", "user journey"]
+        self.supported_diagrams = ["flowchart", "sequence", "class", "state", "er", "gantt", "pie", "user journey", "mindmap"]
         self.points = 0
         self.max_questions = 6
 

@@ -3,7 +3,7 @@ You are a world-class expert at creating Mermaid diagrams. Your task is to gener
 
 <instructions>
     <instruction>Create a {diagram_type} diagram that accurately represents the given brief.</instruction>
-    <instruction>Ensure all elements described in the brief are included in the diagram.</instruction>
+    <instruction>Ensure all elements described in the brief are included in the diagram. Use your inherent knowledge of the subject matter to determine which elements are needed and the details of the diagram.</instruction>
     <instruction>Use appropriate Mermaid syntax for the specified diagram type.</instruction>
     <instruction>Provide only the Mermaid code as your response, without any additional explanation.</instruction>
     <instruction>Do not wrap the Mermaid code in markdown code blocks.</instruction>

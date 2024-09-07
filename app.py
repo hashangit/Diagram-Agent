@@ -1,16 +1,18 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_socketio import SocketIO
 import sys
 from io import StringIO
 from threading import Thread, Event
 import queue
 import re
+import time
+import os
 
 # Import your main function and ConsoleInterface
 from main import main
 from console_interface import ConsoleInterface
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='templates')
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 input_queue = queue.Queue()
@@ -18,8 +20,9 @@ input_event = Event()
 stop_event = Event()
 
 class WebSocketIOWrapper:
-    def __init__(self):
-        self.console_interface = ConsoleInterface()
+    def __init__(self, console_width=80):
+        self.console_interface = ConsoleInterface(width=console_width)
+        self.console_width = console_width
 
     def write(self, message):
         # Convert ANSI color codes to HTML
@@ -56,6 +59,10 @@ class WebSocketIOWrapper:
         html += '</span>' * html.count('<span')
         return html
 
+    def update_width(self, width):
+        self.console_width = width
+        self.console_interface.width = width
+
 def custom_input(prompt=''):
     if prompt:
         sys.stdout.write(prompt)
@@ -68,13 +75,22 @@ def custom_input(prompt=''):
 def home():
     return render_template('index.html')
 
+@app.route('/styles.css')
+def serve_css():
+    return send_from_directory(app.static_folder, 'styles.css')
+
 @socketio.on('start_main')
-def handle_start_main():
+def handle_start_main(data):
     stop_event.clear()
+    console_width = data.get('console_width', 80)
+    
     def run_main():
+        # Add a small delay before starting the main function
+        time.sleep(0.5)
+        
         old_stdout = sys.stdout
         old_input = __builtins__.input
-        sys.stdout = WebSocketIOWrapper()
+        sys.stdout = WebSocketIOWrapper(console_width)
         __builtins__.input = custom_input
         try:
             main()
@@ -98,6 +114,12 @@ def handle_user_input(data):
     input_queue.put(user_input)
     socketio.emit('console_output', {'html': user_input + '<br>', 'text': user_input + '\n'})
     input_event.set()
+
+@socketio.on('update_console_width')
+def handle_update_console_width(data):
+    new_width = data.get('console_width', 80)
+    if isinstance(sys.stdout, WebSocketIOWrapper):
+        sys.stdout.update_width(new_width)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
