@@ -66,7 +66,7 @@ The application will be available at `http://localhost:5000`.
 
 ## Usage
 
-### Generating Diagrams
+### Generating Diagrams [Slightly outdated and need updating]
 
 To generate a diagram, send a POST request to `/generate_diagram` with the following JSON payload:
 
@@ -183,6 +183,14 @@ pip install -r requirements.txt
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+### Future developments
+- Anthropic Prompt caching support (massively reduces the token costs)
+- More LLM provider support 
+- Federated inference capabilities 
+- Ollama support for local inference 
+- PDF/ CSV upload support during the initial interview questionnaire to provide context from existing documents
+- C4 diagram generation support 
 
 ## License
 
