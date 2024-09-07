@@ -18,6 +18,7 @@ Rules:
 3. Ensure the diagram is logically structured and easy to read.
 4. Include all relevant information from the description.
 5. Do not copy the example directly; create a new diagram based on the description.
+6. Ensure the diagram is valid and can be rendered by Mermaid.
 
 Provide only the Mermaid code for the diagram, without any additional explanations or markdown formatting.
 """

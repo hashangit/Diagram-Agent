@@ -5,204 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Mermaid Diagram Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <style>
-        :root {
-            --background: 0 0% 100%;
-            --foreground: 222.2 84% 4.9%;
-            --card: 0 0% 100%;
-            --card-foreground: 222.2 84% 4.9%;
-            --popover: 0 0% 100%;
-            --popover-foreground: 222.2 84% 4.9%;
-            --primary: 222.2 47.4% 11.2%;
-            --primary-foreground: 210 40% 98%;
-            --secondary: 210 40% 96.1%;
-            --secondary-foreground: 222.2 47.4% 11.2%;
-            --muted: 210 40% 96.1%;
-            --muted-foreground: 215.4 16.3% 46.9%;
-            --accent: 210 40% 96.1%;
-            --accent-foreground: 222.2 47.4% 11.2%;
-            --destructive: 0 84.2% 60.2%;
-            --destructive-foreground: 210 40% 98%;
-            --border: 214.3 31.8% 91.4%;
-            --input: 214.3 31.8% 91.4%;
-            --ring: 222.2 84% 4.9%;
-            --radius: 0.5rem;
-        }
-
-        .dark {
-            --background: 222.2 84% 4.9%;
-            --foreground: 210 40% 98%;
-            --card: 222.2 84% 4.9%;
-            --card-foreground: 210 40% 98%;
-            --popover: 222.2 84% 4.9%;
-            --popover-foreground: 210 40% 98%;
-            --primary: 210 40% 98%;
-            --primary-foreground: 222.2 47.4% 11.2%;
-            --secondary: 217.2 32.6% 17.5%;
-            --secondary-foreground: 210 40% 98%;
-            --muted: 217.2 32.6% 17.5%;
-            --muted-foreground: 215 20.2% 65.1%;
-            --accent: 217.2 32.6% 17.5%;
-            --accent-foreground: 210 40% 98%;
-            --destructive: 0 62.8% 30.6%;
-            --destructive-foreground: 210 40% 98%;
-            --border: 217.2 32.6% 17.5%;
-            --input: 217.2 32.6% 17.5%;
-            --ring: 212.7 26.8% 83.9%;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: hsl(var(--background));
-            color: hsl(var(--foreground));
-            margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .container {
-            display: flex;
-            max-width: 1600px;
-            margin: 0 auto;
-            gap: 20px;
-        }
-
-        .section {
-            flex: 1;
-            background-color: hsl(var(--card));
-            border-radius: var(--radius);
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 24px;
-            transition: flex 0.3s ease;
-        }
-
-        .section:hover {
-            flex: 1.5;
-        }
-
-        h1 {
-            color: hsl(var(--card-foreground));
-            text-align: center;
-            margin-bottom: 24px;
-            font-weight: 600;
-        }
-
-        #console, #mermaid-input {
-            width: 100%;
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            background-color: hsl(var(--muted));
-            color: hsl(var(--muted-foreground));
-            font-family: monospace;
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        #console {
-            height: 400px;
-            overflow-y: auto;
-        }
-
-        #mermaid-input {
-            height: 150px;
-            resize: vertical;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        input[type="text"], button {
-            padding: 8px 16px;
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            font-size: 14px;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            background-color: hsl(var(--input));
-            color: hsl(var(--input-foreground));
-        }
-
-        button {
-            background-color: hsl(var(--primary));
-            color: hsl(var(--primary-foreground));
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: hsl(var(--primary) / 0.9);
-        }
-
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: hsl(var(--foreground));
-            font-size: 24px;
-            cursor: pointer;
-        }
-        #mermaid-output {
-            width: 100%;
-            min-height: 300px;
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 24px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        #mermaid-output svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .zoom-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .zoom-controls button {
-            font-size: 18px;
-            padding: 5px 10px;
-            background-color: hsl(var(--primary));
-            color: hsl(var(--primary-foreground));
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-        }
-
-        .zoom-controls button:hover {
-            background-color: hsl(var(--primary) / 0.9);
-        }
-    </style>
 </head>
 <body>
-    <button id="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <button id="theme-toggle">🌓</button>
     <div class="container">
         <div class="section" id="generator-section">
             <h1>AI Mermaid Diagram Generator</h1>
             <div id="console"></div>
             <div class="input-group">
-                <button onclick="newDiagram()">New Diagram</button>
+                <button id="new-diagram-btn">New Diagram</button>
                 <input type="text" id="user-input" placeholder="Enter your input here">
-                <button onclick="sendInput()">Submit</button>
+                <button id="submit-btn">Submit</button>
             </div>
         </div>
         <div class="section" id="visualizer-section">
@@ -216,7 +31,7 @@
                 <div id="mermaid-diagram"></div>
             </div>
             <textarea id="mermaid-input" placeholder="Enter Mermaid code here"></textarea>
-            <button onclick="renderMermaid()">Render Diagram</button>
+            <button id="render-btn">Render Diagram</button>
         </div>
     </div>
 
@@ -227,8 +42,15 @@
         const userInputElement = document.getElementById('user-input');
         const mermaidInputElement = document.getElementById('mermaid-input');
         const mermaidOutputElement = document.getElementById('mermaid-output');
+        const mermaidDiagramElement = document.getElementById('mermaid-diagram');
+        const newDiagramBtn = document.getElementById('new-diagram-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const renderBtn = document.getElementById('render-btn');
+        const themeToggleBtn = document.getElementById('theme-toggle');
 
         mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+        console.log('Mermaid initialized');
 
         socket.on('console_output', function(data) {
             if (data.html) {
@@ -257,8 +79,12 @@
 
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
-            mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
-            renderMermaid();
+            const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+            mermaid.initialize({ startOnLoad: false, theme: newTheme });
+            
+            if (mermaidInputElement.value.trim() !== '') {
+                renderMermaid();
+            }
         }
 
         let currentZoom = 1;
@@ -268,12 +94,23 @@
 
         function renderMermaid() {
             const mermaidCode = mermaidInputElement.value;
-            mermaidOutputElement.innerHTML = '<div class="zoom-controls"><button onclick="zoomIn()">+</button><button onclick="zoomOut()">-</button><button onclick="resetZoom()">Reset</button></div>';
+            console.log('Mermaid code to render:', mermaidCode);
+
+            if (mermaidCode.trim() === '') {
+                mermaidDiagramElement.innerHTML = '<p>No diagram code entered.</p>';
+                console.log('No diagram code entered');
+                return;
+            }
+            
+            console.log('Attempting to render Mermaid diagram');
             mermaid.render('mermaid-diagram', mermaidCode).then(result => {
-                mermaidOutputElement.innerHTML += result.svg;
+                console.log('Mermaid render success, SVG:', result.svg);
+                mermaidDiagramElement.innerHTML = result.svg;
                 resetZoom();
+                console.log('Diagram rendered and inserted into the DOM');
             }).catch(error => {
-                mermaidOutputElement.textContent = 'Error rendering diagram: ' + error;
+                console.error('Mermaid render error:', error);
+                mermaidDiagramElement.innerHTML = '<p>Error rendering diagram: ' + error + '</p>';
             });
         }
 
@@ -297,7 +134,7 @@
         }
 
         function applyZoom() {
-            const svg = mermaidOutputElement.querySelector('svg');
+            const svg = mermaidDiagramElement.querySelector('svg');
             if (svg) {
                 svg.style.transform = `scale(${currentZoom})`;
                 svg.style.transformOrigin = 'center';
@@ -316,6 +153,13 @@
                 renderMermaid();
             }
         });
+
+        newDiagramBtn.addEventListener('click', newDiagram);
+        submitBtn.addEventListener('click', sendInput);
+        renderBtn.addEventListener('click', renderMermaid);
+        themeToggleBtn.addEventListener('click', toggleTheme);
+
+        console.log('Script loaded successfully');
     </script>
 </body>
 </html>

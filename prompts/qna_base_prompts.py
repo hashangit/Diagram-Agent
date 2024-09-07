@@ -43,7 +43,7 @@ def generate_brief_prompt() -> PromptTemplate:
 
         {scratchpad}
 
-        Provide a concise summary that includes the diagram's purpose, key elements, relationships, notations, level of detail, and target audience. Your summary should be clear and informative, ready to be used for diagram generation.
+        Provide a concise summary that includes the diagram's purpose, key elements, relationships, notations, level of detail, and target audience. Your summary should be clear and informative, ready to be used for diagram generation. Use your inherent knowledge to suppliment the summary if needed.
 
         Summary:"""
     )
