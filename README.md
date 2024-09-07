@@ -19,6 +19,8 @@ Mermaid Agent is a powerful tool that combines the capabilities of workflow diag
 - Docker
 - Docker Compose
 
+(Best used with Anthropic Claude Sonnet 3.5 or OpenAI GPT-4. Lesser models tend to create syntax errors)
+
 ### Setup
 
 1. Clone the repository:
