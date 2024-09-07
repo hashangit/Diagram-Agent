@@ -181,21 +181,21 @@ button:hover {
     border-radius: var(--radius);
     padding: 16px;
     margin-bottom: 24px;
-    overflow: hidden;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 #mermaid-diagram {
-    width: 100%;
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 200px; /* Ensure minimum height for diagram */
 }
 
 #mermaid-diagram svg {
     max-width: 100%;
-    height: auto;
+    max-height: 100%;
 }
 
 .zoom-controls {

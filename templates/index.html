@@ -97,20 +97,33 @@
             console.log('Mermaid code to render:', mermaidCode);
 
             if (mermaidCode.trim() === '') {
-                mermaidDiagramElement.innerHTML = '<p>No diagram code entered.</p>';
                 console.log('No diagram code entered');
                 return;
             }
             
             console.log('Attempting to render Mermaid diagram');
-            mermaid.render('mermaid-diagram', mermaidCode).then(result => {
+            
+            // Get the existing mermaid-diagram div
+            let mermaidDiagram = document.getElementById('mermaid-diagram');
+            
+            // Clear only the mermaid-diagram content
+            mermaidDiagram.innerHTML = '';
+
+            // Create a temporary container for Mermaid to render into
+            const tempContainer = document.createElement('div');
+            tempContainer.style.display = 'none';
+            document.body.appendChild(tempContainer);
+
+            mermaid.render('temp-mermaid', mermaidCode).then(result => {
                 console.log('Mermaid render success, SVG:', result.svg);
-                mermaidDiagramElement.innerHTML = result.svg;
+                mermaidDiagram.innerHTML = result.svg;
+                document.body.removeChild(tempContainer);
                 resetZoom();
                 console.log('Diagram rendered and inserted into the DOM');
             }).catch(error => {
                 console.error('Mermaid render error:', error);
-                mermaidDiagramElement.innerHTML = '<p>Error rendering diagram: ' + error + '</p>';
+                mermaidDiagram.innerHTML = '<p>Error rendering diagram: ' + error + '</p>';
+                document.body.removeChild(tempContainer);
             });
         }
 
@@ -134,7 +147,7 @@
         }
 
         function applyZoom() {
-            const svg = mermaidDiagramElement.querySelector('svg');
+            const svg = mermaidOutputElement.querySelector('svg');
             if (svg) {
                 svg.style.transform = `scale(${currentZoom})`;
                 svg.style.transformOrigin = 'center';
