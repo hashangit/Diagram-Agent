@@ -19,7 +19,7 @@ huggingface-hub==0.24.6
 jiter==0.5.0
 langchain==0.2.16
 langchain-anthropic==0.1.23
-langchain-community==0.2.16
+langchain-community==0.2.19
 langchain-core==0.2.38
 langchain-openai==0.1.23
 langchain-text-splitters==0.2.4
