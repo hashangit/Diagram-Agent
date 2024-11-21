@@ -33,7 +33,7 @@ pydantic==1.10.8
 python-dotenv==1.0.0
 PyYAML==6.0
 regex==2024.7.24
-requests==2.31.0
+requests==2.32.2
 simple-websocket==1.0.0
 SQLAlchemy==2.0.34
 tiktoken==0.7.0
